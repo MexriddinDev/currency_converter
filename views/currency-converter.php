@@ -46,7 +46,7 @@
             <div class="row g-3 align-items-center">
                 <div class="col-md-5">
                     <label for="amount" class="form-label visually-hidden">Amount</label>
-                    <input type="number" id="amount" class="form-control" placeholder="Amount" value="10000">
+                    <input type="number" name="amount" id="amount" class="form-control" placeholder="Amount" value="10000">
                 </div>
                 <div class="col-md-3 text-center">
                     <select class="form-select" name="from">
@@ -67,18 +67,11 @@
                     
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select" name ="from">
-                    <?php
-                        global $currencies;
-                        foreach ($currencies as $key => $currency) {
-                            if ($convert2>= 5) {
-                                break;
-                            }
-                            echo '<option value="' . $key . '">' . $key . '</option>';
-                            $convert2++;
-                        }
-                    
-                        ?>
+                    <select class="form-select">
+                      
+                        <option value=""> UZS </option>
+                            
+                      
                     </select>
                 </div>
             </div>
