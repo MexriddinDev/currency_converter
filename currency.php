@@ -28,9 +28,7 @@ class Currency {
         echo ceil($value /$this->getCurrencies()[$currency_name]) . ' ' . $currency_name;
         
     }
-    public function  calculate_rate($value, $currency_name) {
-        echo $value . " " . $currency_name . "=" . $value * $this->getCurrencies()[$currency_name] . " UZS";
+  
 
-}
 
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -52,14 +52,13 @@
                     <select class="form-select" name="from">
                         <?php
                         global $currencies;
-                        foreach ($currencies as $key => $currency) {
-                            if ($convert >= 5) {
-                                break;
-                            }
+                        foreach ($currencies as $key => $currencyy) {
+                            
                             echo '<option value="' . $key . '">' . $key . '</option>';
-                            $convert++;
+                            
                         }
                         ?>
+                        <option value="UZS">UZS</option>
                     </select>
                 </div>
                 <div class="col-md-1 text-center">
@@ -67,15 +66,43 @@
                     
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select">
+                    <select class="form-select" name="to">
                       
                         <option value=""> UZS </option>
+                        <?php
+                        global $currencies;
+                        foreach ($currencies as $key => $currencyy) {
                             
+                            echo '<option value="' . $key . '">' . $key . '</option>';
+                            
+                        }
+                        ?>  
                       
                     </select>
                 </div>
             </div>
-            <p class="rate-info mt-2">1.00 USD = 12,862.73 UZS <i class="bi bi-info-circle"></i></p>
+            <p class="rate-info mt-2">
+            <?php
+                        if (isset($_GET['amount']) && isset($_GET['from'])) {
+                            if ($_GET['from'] == 'UZS'){
+                                $total = (int)$_GET["amount"] / (int)$currency->getCurrencies()[$_GET["to"]];
+                                echo $_GET["amount"] ." USZ = ". $total ." ". $_GET['to']; 
+                                
+                            }
+                            else{
+                                var_dump($_GET["from"]);
+                                $total = (int)$_GET['amount'] * (int)$currency->getCurrencies()[$_GET['from']];
+                                echo $_GET['amount'] ." ". $_GET['from'] ." = ". $total ." USZ";
+                                
+                            }
+                    }
+                    ?>
+
+
+                 
+             <i class="bi bi-info-circle"></i></p>
+
+            
             <button type="submit" class="btn btn-primary btn-primary-custom mt-3">Convert</button>
         </form>
     </div>
