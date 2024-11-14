@@ -95,7 +95,7 @@
 <div class="info-section bg-light">
     <h4 class="fw-bold">WEATHER</h4>
     <p class="text-muted">Weather Information.</p>
-    <!-- "Find out more" button as a link to open weather.php in a new tab -->
+   
     <a href="weather/weather_information.php" class="btn btn-outline-danger" target="_blank">
         Show
     </a>
