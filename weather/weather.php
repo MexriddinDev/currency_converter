@@ -26,7 +26,7 @@
         h2 {
             margin-bottom: 30px;
         }
-        .weather-info {
+        .weather-info{
             margin: 30px 0;
         }
         .weather-widget {

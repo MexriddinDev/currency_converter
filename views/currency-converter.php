@@ -27,7 +27,7 @@
             text-align: center;
         }
 
-        .btn-primary-custom {
+        .btn-primary-custom{
             background-color: #d32f2f;
             border: none;
         }

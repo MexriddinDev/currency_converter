@@ -1,5 +1,5 @@
 <?php
-class WeatherInformation {
+class WeatherInformation{
     private $cityName;
     private $countryCode;
     const API_KEY = "1f2c4527291b18aaab758440a1f8e071";

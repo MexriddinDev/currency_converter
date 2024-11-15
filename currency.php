@@ -1,9 +1,9 @@
 <?php
 class Currency {
     const CURRENCY_API_URL = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/";
-    public array $currencies = [];
+    public array $currencies =[];
 
-    public function __construct() {
+    public function __construct(){
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::CURRENCY_API_URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -18,7 +18,7 @@ class Currency {
         $separated_data = [];
         $currencies_info = $this->currencies;
         foreach ($currencies_info as $currency) {
-            $separated_data[$currency->Ccy] = $currency->Rate;
+            $separated_data[$currency->Ccy] = $currency-> Rate;
         }
         return $separated_data;
     }
