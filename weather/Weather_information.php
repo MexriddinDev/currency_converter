@@ -36,8 +36,8 @@ class WeatherInformation{
 
 
 $cityName = isset($_GET['city']) ? $_GET['city'] : 'Toshkent';
-$countryCode = isset($_GET['country']) ? $_GET['country'] : 'uz';
 
+$countryCode = isset($_GET['country']) ? $_GET['country'] : 'uz';
 
 $weather = new WeatherInformation($cityName, $countryCode);
 $weatherData = $weather->getWeatherData();
