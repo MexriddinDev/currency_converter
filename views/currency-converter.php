@@ -22,9 +22,22 @@
             padding: 60px 0;
         }
 
+
+        .container {
+            display: flex; /* Yonma-yon joylashtirish */
+            justify-content: space-between; /* Elementlar orasini ajratish */
+            gap: 20px; /* Elementlar orasidagi masofa */
+            padding: 20px;
+        }
+
         .info-section {
-            padding: 60px 0;
+            padding: 20px;
             text-align: center;
+            background-color: #f8f9fa; /* bg-light rang */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            flex: 1; /* Teng kenglik */
+        }
         }
 
         .btn-primary-custom{
@@ -91,14 +104,24 @@
             <button type="submit" class="btn btn-primary btn-primary-custom mt-3">Convert</button>
         </form>
     </div>
+ <div  class="container">
 </div>
 <div class="info-section bg-light">
     <h4 class="fw-bold">WEATHER</h4>
     <p class="text-muted">Weather Information.</p>
-   
+
     <a href="weather/weather_information.php" class="btn btn-outline-danger" target="_blank">
         Show
     </a>
+</div>
+<div class="info-section bg-light">
+    <h4 class="fw-bold">Namaz Date</h4>
+    <p class="text-muted">Namaz Information.</p>
+
+    <a href="namaz_date/namaz.frontent.php" class="btn btn-outline-danger" target="_blank">
+        Show
+    </a>
+</div>
 </div>
 </body>
 </html>
