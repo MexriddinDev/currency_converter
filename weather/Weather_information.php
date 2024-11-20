@@ -1,29 +1,39 @@
 <?php
-class WeatherInformation{
+
+require 'vendor/autoload.php';
+
+use GuzzleHttp\Client;
+
+class WeatherInformation
+{
     private $cityName;
     private $countryCode;
     const API_KEY = "1f2c4527291b18aaab758440a1f8e071";
+    private $client;
 
     public function __construct($cityName = "", $countryCode = "") {
         $this->cityName = $cityName;
         $this->countryCode = $countryCode;
+
+        // Initialize Guzzle client
+        $this->client = new Client([
+            'base_uri' => 'https://api.openweathermap.org/',
+            'timeout'  => 2.0,
+        ]);
     }
 
     public function getWeatherData() {
+        try {
 
-        $apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" . urlencode($this->cityName) . "," . $this->countryCode . "&appid=" . self::API_KEY;
+            $apiUrl = "data/2.5/weather?q=" . urlencode($this->cityName) . "," . $this->countryCode . "&appid=" . self::API_KEY;
 
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        $response = curl_exec($ch);
-        curl_close($ch);
+            $response = $this->client->request('GET', $apiUrl);
 
 
-        return json_decode($response, true);
+            return json_decode($response->getBody(), true);
+        } catch (Exception $e) {
+            return 'Error: ' . $e->getMessage();
+        }
     }
 
     public function getWeatherIconUrl() {
@@ -36,12 +46,10 @@ class WeatherInformation{
 
 
 $cityName = isset($_GET['city']) ? $_GET['city'] : 'Toshkent';
-
 $countryCode = isset($_GET['country']) ? $_GET['country'] : 'uz';
 
 $weather = new WeatherInformation($cityName, $countryCode);
 $weatherData = $weather->getWeatherData();
 
-
 require 'weather.php';
-?>
+
