@@ -1,6 +1,7 @@
 <?php
 
 require 'vendor/autoload.php';
+require "DB.php";
 
 use GuzzleHttp\Client;
 
