@@ -110,7 +110,7 @@
     <h4 class="fw-bold">WEATHER</h4>
     <p class="text-muted">Weather Information.</p>
 
-    <a href="weather/weather_information.php" class="btn btn-outline-danger" target="_blank">
+    <a href="/weather" class="btn btn-outline-danger" target="_blank">
         Show
     </a>
 </div>

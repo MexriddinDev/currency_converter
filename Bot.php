@@ -12,15 +12,27 @@ class Bot
     public array $bots;
     public $client;
 
-    public function __construct() {
+    public function makeRequest($method, $data)
+    {
         $this->client = new Client([
             'base_uri' => self::API_URL . $this->token . '/',
-            'timeout'  => 2.0,
+            'timeout' => 2.0,
         ]);
 
-        // Making a correct GET request to 'getMe' endpoint
-        $response = $this->client->request('GET', 'getMe');
-        $this->bots = json_decode($response->getBody(), true);
+
+        $response = $this->client->request('GET', $method, ['json' => $data]);
+        return json_decode($response->getBody()->getContents(), true);
+
+    }
+
+    public function saveUser($user_id, $username): bool
+    {
+        $query = "INSERT INTO tg_users (user_id, username) VALUES (:user_id, :username)";
+        $db = new DB();
+        return $db->conn->prepare($query)->execute([
+            ':user_id' => $user_id,
+            ':username' => $username
+        ]);
     }
 }
 

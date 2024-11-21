@@ -1,6 +1,7 @@
 <?php
 
-require 'vendor/autoload.php';
+//require 'vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 use GuzzleHttp\Client;
 
@@ -43,13 +44,4 @@ class WeatherInformation
             : '';
     }
 }
-
-
-$cityName = isset($_GET['city']) ? $_GET['city'] : 'Toshkent';
-$countryCode = isset($_GET['country']) ? $_GET['country'] : 'uz';
-
-$weather = new WeatherInformation($cityName, $countryCode);
-$weatherData = $weather->getWeatherData();
-
-require 'weather.php';
 
