@@ -114,14 +114,7 @@
         Show
     </a>
 </div>
-<div class="info-section bg-light">
-    <h4 class="fw-bold">Namaz Date</h4>
-    <p class="text-muted">Namaz Information.</p>
 
-    <a href="namaz_date/namaz.frontent.php" class="btn btn-outline-danger" target="_blank">
-        Show
-    </a>
-</div>
 </div>
 </body>
 </html>

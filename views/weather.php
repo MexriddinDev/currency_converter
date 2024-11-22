@@ -1,4 +1,13 @@
- <!DOCTYPE html>
+<?php
+require_once 'src/Weather_information.php';
+
+$city = $_GET['city'] ?? 'Tashkent';
+$weather = new WeatherInformation($city);
+$weatherData = $weather->getWeatherData();
+$iconUrl = $weather->getWeatherIconUrl();
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toshkent Ob-havo Ma'lumotlari</title>
     <style>
+        /* Sizning asl CSS kodingiz o'zgarmadi */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -26,7 +36,7 @@
         h2 {
             margin-bottom: 30px;
         }
-        .weather-info{
+        .weather-info {
             margin: 30px 0;
         }
         .weather-widget {
@@ -58,7 +68,7 @@
             transform: translateX(-50%) scale(1.05);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
-        .search{
+        .search {
             position: absolute;
             top: -50px;
             left: 92%;
@@ -74,7 +84,6 @@
             color: #333;
             font-weight: bold;
             transition: transform 0.2s, box-shadow 0.2s;
-
         }
         .search:focus {
             transform: translateX(-50%) scale(1.05);
@@ -83,36 +92,38 @@
     </style>
 </head>
 <body>
-
 <div class="weather-container">
     <div class="weather-widget">
         <form class="search-container" action="" method="GET">
             <input type="text" name="city" class="search-input" placeholder="Shahar nomini kiriting..." required>
             <button type="submit" class="search">🔍</button>
         </form>
-        <h2> Uzbekistan Weather</h2>
+        <h2>Uzbekistan Weather</h2>
 
-
-        <div class="weather-card text-center">
-            <div class="mb-3">
-                <img id="weather-icon" src="<?php echo $weather->getWeatherIconUrl(); ?>" alt="Weather Icon" class="weather-icon">
+        <?php if ($weatherData['success']): ?>
+            <div class="weather-card text-center">
+                <div class="mb-3">
+                    <img id="weather-icon" src="<?php echo $iconUrl; ?>" alt="Weather Icon" class="weather-icon">
+                </div>
+                <div class="weather-info">
+                    <strong>Temperatura:</strong> <?php echo round($weatherData['data']['main']['temp'] - 273.15, 2); ?> °C
+                </div>
+                <div class="weather-info">
+                    <strong>Bosim:</strong> <?php echo $weatherData['data']['main']['pressure']; ?> hPa
+                </div>
+                <div class="weather-info">
+                    <strong>Namlik:</strong> <?php echo $weatherData['data']['main']['humidity']; ?>%
+                </div>
+                <div class="weather-info">
+                    <strong>Shamol tezligi:</strong> <?php echo $weatherData['data']['wind']['speed']; ?> m/s
+                </div>
             </div>
-        </div>
-
-        <div class="weather-info">
-            <strong>Temperatura:</strong> <?php echo round($weatherData['main']['temp'] - 273.15, 2); ?> °C 🌥️
-        </div>
-        <div class="weather-info">
-            <strong>Bosim:</strong> <?php echo $weatherData['main']['pressure']; ?> hPa 🌡️
-        </div>
-        <div class="weather-info">
-            <strong>Namlik:</strong> <?php echo $weatherData['main']['humidity']; ?>% 💧
-        </div>
-        <div class="weather-info">
-            <strong>Shamol tezligi:</strong> <?php echo $weatherData['wind']['speed']; ?> m/s 🌬️
-        </div>
+        <?php else: ?>
+            <div class="weather-info">
+                <strong>Xato:</strong> <?php echo htmlspecialchars($weatherData['message']); ?>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 </body>
 </html>
-

@@ -1,8 +1,8 @@
 <?php
 
-require 'Currency.php';
-require 'Bot.php';
-require 'weather/Weather_information.php';
+require 'src/Currency.php';
+require 'src/Bot.php';
+require 'src/Weather_information.php';
 
 $bot = new Bot();
 $currency = new Currency();
@@ -38,11 +38,13 @@ if (isset($update)) {
         ]);
     }
 
-  
-    if ($text == 'Ob havo') {
+
+    if ($text == 'Ob havo' or $text == '/weather') {
+
         $weather_info = $weather->getWeatherData();
 
-        if (isset($weather_info['cod']) && $weather_info['cod'] == 200) {
+        if (isset($weather_info['success'])) {
+            $weather_info = $weather_info['data'];
             $temperature = $weather_info['main']['temp'] - 273.15;
             $description = $weather_info['weather'][0]['description'];
             $humidity = $weather_info['main']['humidity'];
@@ -61,12 +63,12 @@ if (isset($update)) {
         } else {
             $bot->makeRequest('sendMessage', [
                 'chat_id' => $chatId,
-                'text' => "Ob-havo ma'lumotlarini olishda xatolik yuz berdi. Keyinroq qayta urinib ko'ring."
+                'text' => "Ob-havo ma'lumotlarini olishda xatolik yuz berdi. Keyinroq qayta urinib ko'ring." . json_encode($weather_info['data'])
             ]);
         }
     }
 
-    if ($text == 'Valyuta') {
+    if ($text == 'Valyuta' or $text == '/currency') {
         $currencies = $currency->getCurrencies();
         $currency_list = "Valyuta kurslari:\n";
 

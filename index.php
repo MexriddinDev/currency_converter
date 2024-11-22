@@ -14,14 +14,21 @@ $uri=parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 require 'vendor/autoload.php';
 
  if ($uri=='/weather'){
-    require 'weather/Weather_information.php';
+
+
+      require "src/Weather_information.php";
+      $weather=new WeatherInformation();
+     $weatherData=$weather->getWeatherData();
+    require 'views/weather.php';
  }elseif ($uri=='/currency'){
-    require 'Currency.php';
-    $currency=new Currency();
+     require 'src/Currency.php';
+     $currency  = new Currency();
+     $currencies = $currency->getCurrencies();
+
     require 'views/currency-converter.php';
 
  } elseif($uri=='/telegram'){
-     require 'telegrambot.php';
+     require 'app/telegrambot.php';
  }
  else{
   echo 404;

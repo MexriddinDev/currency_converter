@@ -1,7 +1,7 @@
 <?php
 
 require 'vendor/autoload.php';
-require "DB.php";
+require "src/DB.php";
 
 use GuzzleHttp\Client;
 
@@ -28,14 +28,29 @@ class Bot
 
     public function saveUser($user_id, $username): bool
     {
-        $query = "INSERT INTO tg_users (user_id, username) VALUES (:user_id, :username)";
+        var_dump($this->getUser($user_id));
+        if ($this->getUser($user_id)) {
+            return false;
+        }
+            $query = "INSERT INTO tg_users (user_id, username) VALUES (:user_id, :username)";
+            $db = new DB();
+            return $db->conn->prepare($query)->execute([
+                ':user_id' => $user_id,
+                ':username' => $username
+            ]);
+        }
+        public function getUser($user_id): bool|array{
+        $query = "SELECT * FROM tg_users WHERE user_id = :user_id";
         $db = new DB();
-        return $db->conn->prepare($query)->execute([
-            ':user_id' => $user_id,
-            ':username' => $username
+        $stmt = $db->conn->prepare($query);
+        $stmt->execute([
+            ':user_id' => $user_id
         ]);
+           return $stmt->fetch();
+
+        }
     }
-}
+
 
 //    public function makeRequest($method, $data=[]){
 //        $ch=curl_init();
