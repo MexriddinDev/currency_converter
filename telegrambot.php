@@ -6,7 +6,7 @@ require 'weather/Weather_information.php';
 
 $bot = new Bot();
 $currency = new Currency();
-$weather = new WeatherInformation("Tashkent", "uz"); // Set default city and country code
+$weather = new WeatherInformation("Tashkent", "uz");
 
 $update = json_decode(file_get_contents('php://input'));
 if (isset($update)) {
@@ -16,48 +16,30 @@ if (isset($update)) {
     $text = $message->text;
     $user_name = $message->from->username;
 
-    $text = $update->message->text ?? '';
-    $from_id = $update->message->from->id ?? '';
-
-    $response = $bot->makeRequest('sendMessage', [
-        'chat_id' => $message->chat->id,
-        'text' => "Hello World! <a href='https://core.telegram.org/bots/api#message'>dkvnknv</a>",
-        'parse_mode' => 'html'
-    ]);
-
-    var_dump($response);
 
     if ($text == '/start') {
-        $response = $bot->makeRequest('sendMessage', [
-            'chat_id' => $from_id,
-            'text' => "Hello World! <a href='https://core.telegram.org/bots/api#message'>dkvnknv</a>",
-            'parse_mode' => 'html'
-        ]);
+        $bot->saveUser($from_id, $user_name);
+        $reply_keyboard = [
+            'keyboard' => [
+                [
+                    ['text' => 'Ob havo'],
+                    ['text' => 'Valyuta']  //
+                ]
+            ],
+            'resize_keyboard' => true,
+            'one_time_keyboard' => false
+        ];
 
-        if (!$response->ok) {
-            $bot->makeRequest('sendMessage', [
-                'chat_id' => $from_id,
-                'text' => json_decode($response)
-            ]);
-        }
-    }
-
-
-    if ($text == '/currency') {
-        $currencies = $currency->getCurrencies();
-        $currency_list = "";
-
-        foreach ($currencies as $currency => $rate) {
-            $currency_list .= $currency . ": " . $rate . "\n";
-        }
 
         $bot->makeRequest('sendMessage', [
-            'chat_id' => $from_id,
-            'text' => $currency_list
+            'chat_id' => $chatId,
+            'text' => "Quyidagi tugmalardan birini tanlang:",
+            'reply_markup' => json_encode($reply_keyboard)
         ]);
     }
 
-    if ($text == '/weather') {
+  
+    if ($text == 'Ob havo') {
         $weather_info = $weather->getWeatherData();
 
         if (isset($weather_info['cod']) && $weather_info['cod'] == 200) {
@@ -66,23 +48,36 @@ if (isset($update)) {
             $humidity = $weather_info['main']['humidity'];
             $wind_speed = $weather_info['wind']['speed'];
 
-
-            $weather_text = "Tashkent Weather:\n";
-            $weather_text .= "Temperature: " . round($temperature, 1) . "°C\n";
-            $weather_text .= "Description: " . ucfirst($description) . "\n";
-            $weather_text .= "Humidity: " . $humidity . "%\n";
-            $weather_text .= "Wind Speed: " . $wind_speed . " m/s\n";
+            $weather_text = "Toshkent Ob-havo:\n";
+            $weather_text .= "Harorat: " . round($temperature, 1) . "°C\n";
+            $weather_text .= "Holati: " . ucfirst($description) . "\n";
+            $weather_text .= "Namlik: " . $humidity . "%\n";
+            $weather_text .= "Shamol tezligi: " . $wind_speed . " m/s\n";
 
             $bot->makeRequest('sendMessage', [
-                'chat_id' => $from_id,
+                'chat_id' => $chatId,
                 'text' => $weather_text
             ]);
         } else {
             $bot->makeRequest('sendMessage', [
-                'chat_id' => $from_id,
-                'text' => "Failed to retrieve weather data. Please try again later."
+                'chat_id' => $chatId,
+                'text' => "Ob-havo ma'lumotlarini olishda xatolik yuz berdi. Keyinroq qayta urinib ko'ring."
             ]);
         }
+    }
+
+    if ($text == 'Valyuta') {
+        $currencies = $currency->getCurrencies();
+        $currency_list = "Valyuta kurslari:\n";
+
+        foreach ($currencies as $currency => $rate) {
+            $currency_list .= $currency . ": " . $rate . "\n";
+        }
+
+        $bot->makeRequest('sendMessage', [
+            'chat_id' => $chatId,
+            'text' => $currency_list
+        ]);
     }
 }
 
